@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="graphjin_dev" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="graphjin" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-i" />
+    <useCustomBuildTags value="true" />
+    <parameters value="serv config/dev.yml" />
+    <kind value="DIRECTORY" />
+    <filePath value="$PROJECT_DIR$/../graphjin|$PROJECT_DIR$/tools.go|$PROJECT_DIR$/internal/serv/cmd.go|$PROJECT_DIR$/main.go" />
+    <package value="github.com/dosco/graphjin" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>

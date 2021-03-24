@@ -602,7 +602,12 @@ func (c *compilerContext) renderOrderBy(sel *qcode.Select) {
 		if i != 0 {
 			c.w.WriteString(`, `)
 		}
-		colWithTable(c.w, sel.Table, col.Col.Name)
+
+		if col.Fn.Name != "" {
+			c.renderOtherFunction(sel, col.Fn)
+		} else {
+			colWithTable(c.w, sel.Table, col.Col.Name)
+		}
 
 		switch col.Order {
 		case qcode.OrderAsc:

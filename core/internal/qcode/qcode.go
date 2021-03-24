@@ -130,6 +130,7 @@ type Arg struct {
 type OrderBy struct {
 	Col   sdata.DBColumn
 	Order Order
+	Fn	Function
 }
 
 type PagingType int8
@@ -953,9 +954,10 @@ func (co *Compiler) compileArgOrderBy(sel *Select, arg *graph.Arg) error {
 			return fmt.Errorf("valid values include asc, desc, asc_nulls_first and desc_nulls_first")
 		}
 
-		if err := setOrderByColName(sel.Ti, &ob, node); err != nil {
+		if err := co.setOrderByColName(sel, &ob, node); err != nil {
 			return err
 		}
+
 		if _, ok := cm[ob.Col.Name]; ok {
 			return fmt.Errorf("duplicate column in order by: %s", ob.Col.Name)
 		}
@@ -1097,7 +1099,7 @@ func setFilter(where *Filter, fil *Exp) {
 	}
 }
 
-func setOrderByColName(ti sdata.DBTable, ob *OrderBy, node *graph.Node) error {
+func (co *Compiler) setOrderByColName(sel *Select, ob *OrderBy, node *graph.Node) error {
 	var list []string
 
 	for n := node; n != nil; n = n.Parent {
@@ -1106,11 +1108,22 @@ func setOrderByColName(ti sdata.DBTable, ob *OrderBy, node *graph.Node) error {
 		}
 	}
 	if len(list) != 0 {
-		col, err := ti.GetColumn(buildPath(list))
+		fn, _, err := co.isFunction(sel, node.Name)
 		if err != nil {
 			return err
 		}
-		ob.Col = col
+
+		if fn.Name != "" {
+			ob.Fn = fn
+			ob.Col = fn.Col
+		} else {
+			col, err := sel.Ti.GetColumn(buildPath(list))
+			if err != nil {
+				return err
+			}
+
+			ob.Col = col
+		}
 	}
 	return nil
 }
