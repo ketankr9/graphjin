@@ -217,7 +217,6 @@ blocklist:
   - password
   - encrypted
   - token
-  - _hyper*
 
 # Create custom actions with their own api endpoints
 # For example the below action will be available at /api/v1/actions/refresh_leaderboard_users

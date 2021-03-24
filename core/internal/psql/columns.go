@@ -105,7 +105,7 @@ func (c *compilerContext) renderUnionColumn(sel, csel *qcode.Select) {
 	c.alias(csel.FieldName)
 }
 
-func (c *compilerContext) renderFunction(sel *qcode.Select, fn qcode.Function) {
+func (c *compilerContext) renderFunction(sel *qcode.Select, fn qcode.Function, withAlias bool) {
 	switch fn.Name {
 	case "search_rank":
 		c.renderFunctionSearchRank(sel, fn)
@@ -114,7 +114,9 @@ func (c *compilerContext) renderFunction(sel *qcode.Select, fn qcode.Function) {
 	default:
 		c.renderOtherFunction(sel, fn)
 	}
-	c.alias(fn.FieldName)
+	if withAlias {
+		c.alias(fn.FieldName)
+	}
 }
 
 func (c *compilerContext) renderFunctionSearchRank(sel *qcode.Select, fn qcode.Function) {
@@ -196,7 +198,7 @@ func (c *compilerContext) renderFunctions(sel *qcode.Select, i int) {
 		if i != 0 {
 			c.w.WriteString(`, `)
 		}
-		c.renderFunction(sel, fn)
+		c.renderFunction(sel, fn, true)
 		i++
 	}
 }
@@ -222,7 +224,7 @@ func (c *compilerContext) renderRecursiveBaseColumns(sel *qcode.Select) {
 		if i != 0 {
 			c.w.WriteString(`, `)
 		}
-		c.renderFunction(sel, fn)
+		c.renderFunction(sel, fn, true)
 		i++
 	}
 }

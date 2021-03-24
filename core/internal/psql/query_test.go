@@ -299,6 +299,17 @@ func aggFunctionWithFilter(t *testing.T) {
 	compileGQLToPSQL(t, gql, nil, "user")
 }
 
+func aggFunctionWithOrderBy(t *testing.T) {
+	gql := `query {
+		products(order_by: { sum_price: desc }) {
+			id
+			sum_price
+		}
+	}`
+
+	compileGQLToPSQL(t, gql, nil, "user")
+}
+
 func syntheticTables(t *testing.T) {
 	gql := `query {
 		me {
@@ -668,6 +679,7 @@ func TestCompileQuery(t *testing.T) {
 	t.Run("aggFunctionBlockedByCol", aggFunctionBlockedByCol)
 	t.Run("aggFunctionDisabled", aggFunctionDisabled)
 	t.Run("aggFunctionWithFilter", aggFunctionWithFilter)
+	t.Run("aggFunctionWithOrderBy", aggFunctionWithOrderBy)
 	t.Run("syntheticTables", syntheticTables)
 	t.Run("queryWithVariables", queryWithVariables)
 	t.Run("withWhereOnRelations", withWhereOnRelations)

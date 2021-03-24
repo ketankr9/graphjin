@@ -604,7 +604,7 @@ func (c *compilerContext) renderOrderBy(sel *qcode.Select) {
 		}
 
 		if col.Fn.Name != "" {
-			c.renderOtherFunction(sel, col.Fn)
+			c.renderFunction(sel, col.Fn, false)
 		} else {
 			colWithTable(c.w, sel.Table, col.Col.Name)
 		}
