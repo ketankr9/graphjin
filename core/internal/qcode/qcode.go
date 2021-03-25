@@ -1108,12 +1108,12 @@ func (co *Compiler) setOrderByColName(sel *Select, ob *OrderBy, node *graph.Node
 		}
 	}
 	if len(list) != 0 {
-		fn, _, err := co.isFunction(sel, node.Name)
+		fn, agg, err := co.isFunction(sel, node.Name)
 		if err != nil {
 			return err
 		}
 
-		if fn.Name != "" {
+		if agg {
 			ob.Fn = fn
 			ob.Col = fn.Col
 		} else {
